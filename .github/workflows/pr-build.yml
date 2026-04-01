@@ -6,10 +6,11 @@ on:
       - main
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
+  lint:
+     name: Lint Check
+     runs-on: ubuntu-latest
 
-    steps:
+     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
@@ -22,8 +23,36 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  test:
+     name: Test Check
+     runs-on: ubuntu-latest
+
+     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
       - name: Test
         run: npm test -- --watch=false --browsers=ChromeHeadless
+
+  build:
+     name: Build Check
+     runs-on: ubuntu-latest
+
+     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
 
       - name: Build
         run: npm run build
