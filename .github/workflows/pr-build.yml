@@ -79,6 +79,9 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
         id: setup-chrome
 
+      - name: Allow Chrome sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
       - name: Serve app
         run: npx serve dist/hello-angular-actions/browser -p 4200 &
 
