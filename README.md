@@ -57,3 +57,15 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+# Build the app
+npm run build
+
+# Start the server in the background
+npx serve dist/hello-angular-actions/browser -p 4200 &
+
+# Wait for it to start
+npx wait-on http://localhost:4200
+
+# Run lighthouse audit
+npx lighthouse http://localhost:4200 --view

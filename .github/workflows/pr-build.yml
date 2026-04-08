@@ -92,3 +92,41 @@ jobs:
         run: npx pa11y-ci
         env:
           PUPPETEER_EXECUTABLE_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+  lighthouse:
+     name: Lighthouse Audit
+     needs: [build]
+     runs-on: ubuntu-latest
+
+     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+
+      - name: Allow Chrome sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Serve app
+        run: npx serve dist/hello-angular-actions/browser -p 4200 &
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:4200
+
+      - name: Run Lighthouse Audit
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://localhost:4200
+          uploadArtifacts: true
+          temporaryPublicStorage: true
