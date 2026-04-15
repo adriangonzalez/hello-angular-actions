@@ -123,5 +123,19 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://localhost:4200
 
-      - name: Run Lighthouse Audit
-        run: npx lighthouse http://localhost:4200 --preset=desktop
+      - name: Run Lighthouse Check
+        uses: foo-software/lighthouse-check-action@master
+        id: lighthouseCheck
+        with:
+          urls: |
+            http://localhost:4200
+
+      - name: Verify Lighthouse Results
+        uses: foo-software/lighthouse-check-status-action@master
+        with:
+          lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+          minAccessibilityScore: "90"
+          minBestPracticesScore: "80"
+          minPerformanceScore: "80"
+          minProgressiveWebAppScore: "80"
+          minSeoScore: "90"
