@@ -129,8 +129,6 @@ jobs:
         with:
           urls: |
             http://localhost:4200
-            uploadArtifacts: true
-            temporarypublicstorage: true
 
       - name: Verify Lighthouse Results
         uses: foo-software/lighthouse-check-status-action@master
